@@ -1,0 +1,42 @@
+<%	provide(:title,	'Comment')	%>
+<h1>Post a Comment</h1>
+<center>
+<p>
+	<%= @micropost.content %>
+</p>
+<% if @micropost.comments.any? %>
+<ul>
+	<% @micropost.comments.each do |comment| %>
+	<span class="timestamp">
+		
+	<li><%= comment.body %></li>
+	Posted <%= time_ago_in_words(comment.created_at) %> ago by <%= link_to current_user.name, current_user %>
+	</span>
+    <% end %> 
+	<% end %>
+	
+</ul>
+</center>
+
+
+<% if (current_user == @micropost.user) || (logged_in? && current_user.following?(@micropost.user)) %>
+	
+	<div class="row">
+		<div class="col-lg-4 col-lg-offset-4">
+		<%= form_for(@comment) do |f| %>
+		  <%= render "error_messages" %>
+		  
+		  <input type="hidden" name="micropost_id" value="<%= @micropost.id %>" />
+		  <input type="hidden" name="user_id" value="<%= current_user.id %>" /> 	  
+		  
+		  <%= f.label :Your_Comment %>
+		  <%= f.text_area :body, class: 'form-control' %>
+		  <br />
+		  
+		  <%= f.submit "Make a comment", class: "btn btn-primary" %>
+		<% end %>
+			
+		</div>
+	</div>
+	
+<% end %>

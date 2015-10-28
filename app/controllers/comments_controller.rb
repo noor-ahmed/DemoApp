@@ -3,7 +3,7 @@ class CommentsController < ApplicationController
   
   
   def create
-    @comment = current_user.comments.create({body: params[:comment][:body], microposts_id: params[:micropost_id]})
+    @comment = current_user.comments.create({body: params[:comment][:body], micropost_id: params[:micropost_id]})
     if @comment.save
       flash[:success] = "Your Comment is Posted"
       micropost = Micropost.find(params[:micropost_id])
